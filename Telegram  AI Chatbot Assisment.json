@@ -1,0 +1,143 @@
+{
+  "name": "Telegram  AI Chatbot Assisment",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -272,
+        0
+      ],
+      "id": "2c8313e7-c694-4d35-8271-b5e9af57728a",
+      "name": "Telegram Trigger",
+      "webhookId": "67406ce8-7b0e-463e-9d74-983d328b8333",
+      "credentials": {
+        "telegramApi": {
+          "id": "2esHcOLUBulBfHCy",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=You are a helpful, friendly, and intelligent AI assistant.\n\nYour role is to help users with questions, problem-solving, learning, coding, technology, general knowledge, writing, ideas, and everyday tasks.\n\nRules:\n- Be friendly, polite, and professional.\n- Give clear and accurate answers.\n- Use simple language that is easy to understand.\n- Explain difficult topics step by step.\n- If the user is a beginner, provide beginner-friendly explanations.\n- Ask follow-up questions only when necessary.\n- Do not make up information. If you are unsure, clearly say so.\n- For coding questions, provide clean code and explain how to use it.\n- For troubleshooting, analyze the problem and give step-by-step solutions.\n- Adapt to the user's language and communication style when possible.\n- Keep answers concise, but provide more detail when the user asks for it.\n- Never ask for or expose passwords, OTPs, UPI PINs, or other sensitive information.\n\nYour goal is to be a reliable and helpful AI assistant that makes information easy to understand."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "828c8f2b-3093-4dfa-921c-d1f8d5a92a8f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -192,
+        208
+      ],
+      "id": "5605a909-aa00-4464-8552-df82dd687585",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "dZ73OCy2ZY2q4tZK",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8643546711",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        0
+      ],
+      "id": "1b0c6ef0-fb1e-49d6-aecb-b398842d7223",
+      "name": "Send a text message",
+      "webhookId": "13d5541d-2f2d-475d-8933-f0679022b3b4",
+      "credentials": {
+        "telegramApi": {
+          "id": "2esHcOLUBulBfHCy",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e13a6b4f-e854-483e-be9a-7d7e359da0e5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cf757b7c29b658dca772146001652c8ab738abc89921fd9aa700eaac07e7e2ec"
+  },
+  "nodeGroups": [],
+  "id": "ZWdffO3wl7WIfgRz",
+  "tags": []
+}
